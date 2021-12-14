@@ -16,33 +16,37 @@ function Tags({ label, tags, onDelete, onUpdateTags }) {
       onUpdateTags(tagInput.toUpperCase());
       setTagInput("");
     }
+    if (event.key === "Backspace" && tagInput === "") {
+      onDelete(tags[tags.length - 1]);
+    }
   };
 
   return (
     <TagsContainer>
       <label htmlFor="tags">{label}</label>
-      <input
-        type="text"
-        id="tags"
-        name="tags"
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        placeholder="Add a tag!"
-        value={tagInput}
-      />
       <TagsWrapper>
         {tags.map((tag) => (
           <TagsStyle>
             {tag}{" "}
-            <span
+            <DeleteX
               onClick={() => {
                 onDelete(tag);
               }}
             >
               X
-            </span>
+            </DeleteX>
           </TagsStyle>
         ))}
+
+        <input
+          type="text"
+          id="tags"
+          name="tags"
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Add a tag!"
+          value={tagInput}
+        />
       </TagsWrapper>
     </TagsContainer>
   );
@@ -52,13 +56,25 @@ export default Tags;
 
 const TagsContainer = styled.section`
   display: grid;
+  border: 1px green solid;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: #51a451;
+  border-radius: 10px;
   label {
     font-weight: bold;
   }
 
   input {
-    padding: 0.5rem 0.2rem;
+    padding: 0.3rem 0.2rem;
     margin-top: 0.5rem;
+    margin-left: 0.3rem;
+    width: 5rem;
+    border: none;
+    border-left: 5px solid purple;
+    background: #e6e6e6;
+    height: 1.6rem;
+    border-radius: 5px;
   }
 `;
 
@@ -73,4 +89,15 @@ const TagsStyle = styled.span`
 const TagsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+`;
+
+const DeleteX = styled.span`
+  background: rgba(255, 255, 255, 0.303);
+  padding: 0.2rem 0.5rem;
+  border-radius: 100%;
+  cursor: pointer;
+  &:hover {
+    background-color: white;
+    color: red;
+  }
 `;
